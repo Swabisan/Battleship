@@ -24,7 +24,7 @@ public class Battleship {
         boolean greeting = true;
         boolean placementInstructions = false;
         boolean gameplayInstructions = false;
-        Message(greeting, placementInstructions, gameplayInstructions);
+        message(greeting, placementInstructions, gameplayInstructions);
         greeting = false;
 
         char mapUserShips[][] = new char[10][10];                   // generate gameboards
@@ -32,31 +32,31 @@ public class Battleship {
         char mapComp[][] = new char[10][10];
 
         placementInstructions = true;
-        Message(greeting, placementInstructions, gameplayInstructions);
+        message(greeting, placementInstructions, gameplayInstructions);
         placementInstructions = false;
 
-        PopulateWithWater(mapUserShips, mapUserStrike, mapComp);    // fills board with water
-        PopulateWithShips(mapUserShips);                            // user's ship placement
-        PopulateWithShipsComp(mapComp);                             // computer's ship placement
+        populateWithWater(mapUserShips, mapUserStrike, mapComp);    // fills board with water
+        populateWithShips(mapUserShips);                            // user's ship placement
+        populateWithShipsComp(mapComp);                             // computer's ship placement
 
         gameplayInstructions = true;
-        Message(greeting, placementInstructions, gameplayInstructions);
+        message(greeting, placementInstructions, gameplayInstructions);
         gameplayInstructions = false;
 
         int userHit = 0;
         int compHit = 0;
         do {                     // gameplay continues until someone wins
-            UserStrike(mapComp, mapUserShips, mapUserStrike, userHit);
-            CompStrike(mapUserShips, compHit);
-        } while (userHit < 19 || compHit < 19);
-        if (userHit == 19) {                                         // win condition
+            userStrike(mapComp, mapUserShips, mapUserStrike, userHit);
+            compStrike(mapUserShips, compHit);
+        } while (userHit < 17 || compHit < 17);
+        if (userHit == 17) {                                         // win condition
             System.out.println("All enemy ships have been sunk. You won!");
         } else {
             System.out.println("All of your ships have sunk. Game over.");
         }
     }
 
-    public static void Message(boolean greeting, boolean placementInstructions, boolean gameplayInstructions) {
+    public static void message(boolean greeting, boolean placementInstructions, boolean gameplayInstructions) {
         if (greeting) {
             System.out.println("Welcome to Battleship!");
         } else if (placementInstructions) {
@@ -71,7 +71,7 @@ public class Battleship {
         }
     }
 
-    public static void PopulateWithWater(char[][] mapUserShips, char[][] mapUserStrike, char[][] mapComp) {
+    public static void populateWithWater(char[][] mapUserShips, char[][] mapUserStrike, char[][] mapComp) {
         for (char[] row : mapUserShips) {                                       // * is there a way to do this in less code?
             Arrays.fill(row, '~');
         }
@@ -84,7 +84,7 @@ public class Battleship {
         }
     }
 
-    public static void PopulateWithShips(char[][] map) {
+    public static void populateWithShips(char[][] map) {
         Scanner input = new Scanner(System.in); // scanner
         String ship = "";                                                       // string to determine which ship we are about to place
         String shipDirection = "";                                              // determine direction of ship placement
@@ -243,7 +243,7 @@ public class Battleship {
         }
     }
 
-    public static void PopulateWithShipsComp(char[][] map) {
+    public static void populateWithShipsComp(char[][] map) {
         int shipDirection;      // determine direction of ship placement
         boolean placingShips = true;
         // misc variables
@@ -353,7 +353,7 @@ public class Battleship {
         }
     }
 
-    public static void UserStrike(char[][] map, char[][] mapUserShips, char[][] mapUserStrike, int userHit) {
+    public static void userStrike(char[][] map, char[][] mapUserShips, char[][] mapUserStrike, int userHit) {
         System.out.println("----Strike Map-----");
         for (int i = 0; i < mapUserStrike.length; i++) {                 // displays user board
 
@@ -381,6 +381,9 @@ public class Battleship {
         Scanner input = new Scanner(System.in); // scanner
 
         System.out.print("\n\nEnter a coordinate: ");
+        boolean notClear;
+        do {
+            notClear = false;
         if (input.hasNextInt()) {
             inputX = input.nextInt();
             inputY = input.nextInt();
@@ -388,29 +391,37 @@ public class Battleship {
             inputY--;                           // off by one rule
             if (inputX < 0 || inputX > 9 || inputY < 0 || inputY > 9) {
                 System.out.println("That location is out of bounds.\n");
+                notClear = true;
                 input.nextLine();
             } else if (map[inputX][inputY] == 'O') {
                 map[inputX][inputY] = 'X';
                 System.out.println("A hit!\n");
                 mapUserStrike[inputX][inputY] = 'X';
                 userHit++;
+                return;
             } else if (map[inputX][inputY] == 'X' || map[inputX][inputY] == 'M') {
                 System.out.println("You've already fired at this location.\n");
+                notClear = true;
+                input.nextLine();
             } else if (map[inputX][inputY] == '~') {
                 map[inputX][inputY] = 'M';
                 System.out.println("Miss!\n");
                 mapUserStrike[inputX][inputY] = 'M';
+                return;
             } else {
-                input.nextInt();
+                notClear = true;
+                input.nextLine();
             }
         }
+    } while (notClear);
 
     }
 
-    public static void CompStrike(char[][] map, int compHit) {
+    public static void compStrike(char[][] map, int compHit) {
         Random rnd = new Random();  //Activates random class
-        boolean notClear = false;
+        boolean notClear;
         do {
+            notClear = false;
             int inputY = rnd.nextInt(10);
             int inputX = rnd.nextInt(10);
             if (inputX < 0 || inputX > 9 || inputY < 0 || inputY > 9) {
