@@ -376,8 +376,8 @@ public class Battleship {
         int inputX;
         // *Note: much of this program was learning 1000 ways to write a scanner input
         System.out.print("\n\nEnter a coordinate: ");
-        boolean notClear;
-        boolean userHit = false;
+        boolean notClear;           // loop that prevents cpu from selecting an invalid coordinate
+        boolean userHit = false;    // return value tracking hits
         do {
             notClear = false;
             if (input.hasNextInt()) {
@@ -437,7 +437,7 @@ public class Battleship {
 
     public static void showMaps(char[][] mapUserStrike, boolean strikeMap) {
 
-        String name = "";
+        String name = "";       // determines map type
         if (strikeMap) {
             name = "Strike Map";
         } else {
