@@ -21,7 +21,9 @@ import java.util.Scanner;
 public class Battleship {
 
     public static void main(String[] args) {
+        
         Scanner input = new Scanner(System.in);
+        Random rnd = new Random();
 
         boolean greeting = true;    // these three booleans are the params for the message method
         boolean placementInstructions = false;
@@ -40,7 +42,7 @@ public class Battleship {
         populateWithWater(mapUserShips, mapUserStrike, mapComp);    // fills board with water
         showMaps(mapUserShips, false);
         populateWithShips(mapUserShips, input);                     // user's ship placement
-        populateWithShipsComp(mapComp);                             // computer's ship placement
+        populateWithShipsComp(mapComp, rnd);                             // computer's ship placement
 
         gameplayInstructions = true;
         message(greeting, placementInstructions, gameplayInstructions);
@@ -51,7 +53,7 @@ public class Battleship {
         boolean didCompHit;
         do {                                                        // gameplay continues until someone wins
             didUserHit = userStrike(mapComp, mapUserShips, mapUserStrike, input);
-            didCompHit = compStrike(mapUserShips);
+            didCompHit = compStrike(mapUserShips, rnd);
             if (didUserHit) {                                       // takes return boolean and adds one to score based on return value
                 userHit++;
                 didUserHit = false; // resets value
@@ -69,6 +71,7 @@ public class Battleship {
     }
 
     public static void message(boolean greeting, boolean placementInstructions, boolean gameplayInstructions) {
+
         if (greeting) {
             System.out.println("Welcome to Battleship!");
         } else if (placementInstructions) {
@@ -84,6 +87,7 @@ public class Battleship {
     }
 
     public static void populateWithWater(char[][] mapUserShips, char[][] mapUserStrike, char[][] mapComp) {
+
         for (char[] row : mapUserShips) {                                       // *Note: is there a way to do this in less code?
             Arrays.fill(row, '~');
         }
@@ -96,8 +100,8 @@ public class Battleship {
         }
     }
 
-    public static void populateWithShips(char[][] map, Scanner in) {
-        Scanner input = new Scanner(System.in);
+    public static void populateWithShips(char[][] map, Scanner input) {
+
         String ship = "";                                                       // string to determine which ship we are about to place
         String shipDirection = "";                                              // determine direction of ship placement
         boolean placingShips = true;
@@ -253,7 +257,8 @@ public class Battleship {
         }
     }
 
-    public static void populateWithShipsComp(char[][] map) {
+    public static void populateWithShipsComp(char[][] map, Random rnd) {
+
         int shipDirection;      // determine direction of ship placement
         boolean placingShips = true;
         // misc variables
@@ -277,7 +282,6 @@ public class Battleship {
             int userInputY = 0;         // index variable for column
             boolean checkpointA = true;
             boolean collision = false;
-            Random rnd = new Random();  //Activates random class
 
             while (checkpointA) {
 
@@ -363,8 +367,7 @@ public class Battleship {
         }
     }
 
-    public static boolean userStrike(char[][] map, char[][] mapUserShips, char[][] mapUserStrike, Scanner in) {
-        Scanner input = new Scanner(System.in);
+    public static boolean userStrike(char[][] map, char[][] mapUserShips, char[][] mapUserStrike, Scanner input) {
 
         showMaps(mapUserStrike, true);  // displays gameboard
         showMaps(mapUserShips, false);
@@ -408,8 +411,8 @@ public class Battleship {
         return userHit;
     }
 
-    public static boolean compStrike(char[][] map) {
-        Random rnd = new Random();  //Activates random class
+    public static boolean compStrike(char[][] map, Random rnd) {
+
         boolean notClear;
         boolean compHit = false;
         do {                        // mirrors userStrike w/out scanner input
@@ -433,6 +436,7 @@ public class Battleship {
     }
 
     public static void showMaps(char[][] mapUserStrike, boolean strikeMap) {
+
         String name = "";
         if (strikeMap) {
             name = "Strike Map";
