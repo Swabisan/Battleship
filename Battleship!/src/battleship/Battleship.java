@@ -1,5 +1,6 @@
 /*
  * Battleship! a board game in java.
+ * Goal: To use what I learned from CSC 210 to create the board game "Battleship" as a java program.
  * To do:
  * - add display to aid ship placement [DONE]
  * - label axis on display [DONE]
