@@ -8,6 +8,10 @@
  * - [Critical Bug] Program hangs halfway through a game [FIXED]
  * - pass random through params to save reasources [NOT DONE]
  * - check legallity
+ * - split into more methods
+ * - remove unnessisary params
+ * - fix placement bugs
+ * - add x-y axis indicators
  */
 package battleship;
 
@@ -29,37 +33,37 @@ public class Battleship {
         greetingMessage();
         placementInstructions();
 
-        char mapUserShips[][] = new char[10][10];                   // generate gameboards
+        char mapUserShips[][] = new char[10][10];                               // generate gameboards
         char mapUserStrike[][] = new char[10][10];
         char mapComp[][] = new char[10][10];
 
-        populateWithWater(mapUserShips);                            // fills board with water
+        populateWithWater(mapUserShips);                                        // fills board with water
         populateWithWater(mapUserStrike);
         populateWithWater(mapComp);
 
-        showMaps(mapUserShips, false);                              // *Note: remove boolean param
-        populateWithShipsUser(mapUserShips, input);                     // user's ship placement
-        populateWithShipsComp(mapComp, rnd);                        // computer's ship placement
+        showMaps(mapUserShips, false);                                          // ****Note: remove boolean param
+        populateWithShipsUser(mapUserShips, input);                             // user's ship placement
+        populateWithShipsComp(mapComp, rnd);                                    // computer's ship placement
 
         gameplayInstructions();
 
-        int userHit = 0;            // a bunch of variables for win condition calculations
+        int userHit = 0;                                                        // a bunch of variables for win condition calculations
         int compHit = 0;
         boolean didUserHit;
         boolean didCompHit;
-        do {                                                        // gameplay continues until someone wins
+        do {                                                                    // gameplay continues until someone wins
             didUserHit = userStrike(mapComp, mapUserShips, mapUserStrike, input);
             didCompHit = compStrike(mapUserShips, rnd);
-            if (didUserHit) {                                       // takes return boolean and adds one to score based on return value
+            if (didUserHit) {                                                   // takes return boolean and adds one to score based on return value
                 userHit++;
-                didUserHit = false; // resets value
+                didUserHit = false;                                             // resets value
             } else if (didCompHit) {
                 compHit++;
                 didCompHit = false;
             }
             System.out.println("Hits required for victory: " + (17 - userHit) + "\n");
-        } while (userHit < 17 && compHit < 17);                      // *Note: the biggest gamebreaking bug in this program was "||" vs "&&"
-        if (userHit == 17) {                                         // win condition
+        } while (userHit < 17 && compHit < 17);                                 // *Note: the biggest gamebreaking bug in this program was "||" vs "&&"
+        if (userHit == 17) {                                                    // win condition
             System.out.println("All enemy ships have been sunk. You won!");
         } else if (compHit == 17) {
             System.out.println("All of your ships have sunk. Game over.");
@@ -93,13 +97,12 @@ public class Battleship {
         }
     }
 
-    public static void populateWithShipsUser(char[][] map, Scanner input) {     // *Note: split into methods & combine w/ comp for things that are similar e.i collision
+    public static void populateWithShipsUser(char[][] map, Scanner input) {     // ****Note: split into methods & combine w/ comp for things that are similar e.i collision
 
         String ship = "";                                                       // string to determine which ship we are about to place *Note: convert to S.O.P
         String shipDirection = "";                                              // determine direction of ship placement
         boolean placingShips = true;
-        // "Norcal vernacular for very" variables
-        int i = 0;              // general purpose for loop counter
+        int i = 0;                                                              // general purpose for loop counter
         // Determines what ship user is placing
         int numberofShips = 5;
         int sizeOfCurrentShip;
@@ -108,10 +111,10 @@ public class Battleship {
         System.out.println("\nYou have 5 Ships, 1 Carrier [5], 1 Battleship [4], 1 Cruisers [3], 1 Submarine [3], and 1 Destroyer [2].");
         System.out.println("To place ships, enter a coordinate [x y], and then enter a direction.\n\n");
 
-        while (placingShips) {                  // loops through every ship that needs to be placed
+        while (placingShips) {                                                  // loops through every ship that needs to be placed
             if (numberofShips == 2) {
-                sizeOfCurrentShip = 3;                // Most ships have (length = order number) except for these
-            } else if (numberofShips == 1) {    // which have lengths that are different from their order.
+                sizeOfCurrentShip = 3;                                          // Most ships have (length = order number) except for these
+            } else if (numberofShips == 1) {                                    // which have lengths that are different from their order.
                 sizeOfCurrentShip = 2;
             } else {
                 sizeOfCurrentShip = numberofShips;
@@ -138,20 +141,20 @@ public class Battleship {
             }
 
             // Determines where the ship is
-            int userInputX = 0;     // index variable for row
-            int userInputY = 0;     // index variable for column
+            int userInputX = 0;                                                 // index variable for row
+            int userInputY = 0;                                                 // index variable for column
             boolean noError = true;
 
-            do {                            // case specific check **
+            do {                                                                // case specific check **
                 System.out.print("Enter coordinate for " + ship + ": ");        // tells user which ship they are placing
 
-                if (input.hasNextInt()) {   // data type check *
-                    userInputX = input.nextInt();   // row
+                if (input.hasNextInt()) {                                       // data type check *
+                    userInputX = input.nextInt();                               // row
                     if (input.hasNextInt()) {
-                        userInputY = input.nextInt();   // column
+                        userInputY = input.nextInt();                           // column
 
                         userInputX--;
-                        userInputY--;                   // off by one rule
+                        userInputY--;                                           // off by one rule
                         if (userInputX >= 0 && userInputX <= 9 && userInputY >= 0 && userInputY <= 9) {
                             if (map[userInputX][userInputY] == '~') {
                                 noError = false;
@@ -167,11 +170,11 @@ public class Battleship {
                         System.out.println("Invalid entry, coordinates must be entered as a form of 'x y'.\n");
                         input.nextLine();
                     }
-                } else {                    // *
+                } else {                                                        // *
                     System.out.println("Invalid entry, coordinates must be entered as a form of 'x y'.\n");
                     input.nextLine();
                 }
-            } while (noError);              // **
+            } while (noError);                                                  // **
 
             boolean collision;
             do {
@@ -184,22 +187,22 @@ public class Battleship {
 
                     if ("right".equals(shipDirection) && (userInputY + sizeOfCurrentShip) < 9) {          // if else/ else if series
 
-                        for (i = 0; i < sizeOfCurrentShip; i++) {                         // loop checks ship length to scan for possible collisions
+                        for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[userInputX][tempY] == 'O') {
-                                collision = true;           // signals an error
+                                collision = true;                               // signals an error
                                 break;
                             }
-                            tempY++;               // if no error, loop will continue to check
+                            tempY++;                                            // if no error, loop will continue to check
                         }
                         if (!(collision)) {
                             tempY = userInputY;
-                            for (i = 0; i < sizeOfCurrentShip; i++) {                     // loop adds ship lengths amount of space in the direction facing to be true
+                            for (i = 0; i < sizeOfCurrentShip; i++) {           // loop adds ship lengths amount of space in the direction facing to be true
                                 map[userInputX][tempY] = 'O';
                                 tempY++;
                             }
                         }
                     } else if ("left".equals(shipDirection) && (userInputY - sizeOfCurrentShip) >= -1) {  // *Note: I don't know why -1 works
-                        for (i = 0; i < sizeOfCurrentShip; i++) {                         // loop checks ship length to scan for possible collisions
+                        for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[userInputX][tempY] == 'O') {
                                 collision = true;
                                 break;
@@ -208,13 +211,13 @@ public class Battleship {
                         }
                         if (!(collision)) {
                             tempY = userInputY;
-                            for (i = 0; i < sizeOfCurrentShip; i++) {                     // loop adds ship lengths amount of space in the direction facing to be true
+                            for (i = 0; i < sizeOfCurrentShip; i++) {           // loop adds ship lengths amount of space in the direction facing to be true
                                 map[userInputX][tempY] = 'O';
                                 tempY--;
                             }
                         }
                     } else if ("up".equals(shipDirection) && (userInputX - sizeOfCurrentShip) >= -1) {
-                        for (i = 0; i < sizeOfCurrentShip; i++) {                         // loop checks ship length to scan for possible collisions
+                        for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[tempX][userInputY] == 'O') {
                                 collision = true;
                                 break;
@@ -224,13 +227,13 @@ public class Battleship {
                         if (!(collision)) {
                             tempX = userInputX;
                             userInputX += sizeOfCurrentShip;
-                            for (i = 0; i < sizeOfCurrentShip; i++) {                     // loop adds ship lengths amount of space in the direction facing to be true
+                            for (i = 0; i < sizeOfCurrentShip; i++) {           // loop adds ship lengths amount of space in the direction facing to be true
                                 map[tempX][userInputY] = 'O';
                                 tempX--;
                             }
                         }
                     } else if ("down".equals(shipDirection) && (userInputX + sizeOfCurrentShip) < 9) {
-                        for (i = 0; i < sizeOfCurrentShip; i++) {                         // loop checks ship length to scan for possible collisions
+                        for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[tempX][userInputY] == 'O') {
                                 collision = true;
                                 break;
@@ -240,7 +243,7 @@ public class Battleship {
                         if (!(collision)) {
                             tempX = userInputX;
                             userInputX -= sizeOfCurrentShip;
-                            for (i = 0; i < sizeOfCurrentShip; i++) {                     // loop adds ship lengths amount of space in the direction facing to be true
+                            for (i = 0; i < sizeOfCurrentShip; i++) {           // loop adds ship lengths amount of space in the direction facing to be true
                                 map[tempX][userInputY] = 'O';
                                 tempX++;
                             }
@@ -261,20 +264,20 @@ public class Battleship {
             } while (collision);
 
             numberofShips--;
-            if (numberofShips == 0) {                              // ends once user has placed all ships
+            if (numberofShips == 0) {                                           // ends once user has placed all ships
                 placingShips = false;
             }
 
             showMaps(map, false);
         }
-    }                                                               // *NOTE: loop back to coordinates if bad input
+    }                                                                           // *NOTE: loop back to coordinates if bad input
 
     public static void populateWithShipsComp(char[][] map, Random rnd) {
 
-        int shipDirection;              // determine direction of ship placement
+        int shipDirection;                                                      // determine direction of ship placement
         boolean placingShips = true;
         // misc variables
-        int i = 0;                      // misc counter variable
+        int i = 0;                                                              // misc counter variable
         // SHIP PLACEMENT
         // Determines what ship user is placing
         int numberofShips = 5;
@@ -290,15 +293,15 @@ public class Battleship {
             }
 
             // Determines where the ship is
-            int userInputX = 0;         // index variable for row
-            int userInputY = 0;         // index variable for column
+            int userInputX = 0;                                                 // index variable for row
+            int userInputY = 0;                                                 // index variable for column
             boolean checkpointA = true;
             boolean collision = false;
 
             while (checkpointA) {
 
-                userInputX = rnd.nextInt(10);   // row
-                userInputY = rnd.nextInt(10);   // column
+                userInputX = rnd.nextInt(10);                                   // row
+                userInputY = rnd.nextInt(10);                                   // column
                 if (map[userInputX][userInputY] == '~') {
                     checkpointA = false;
                 }
@@ -310,9 +313,9 @@ public class Battleship {
                 if (shipDirection == 0 && (userInputY + currentShip) < 10) {                                                     // if else/ else if series
                     for (i = 0; i < currentShip; i++) {                         // loop checks ship length to scan for possible collisions
                         if (map[userInputX][userInputY] == 'O') {
-                            collision = true;   // signals an error
+                            collision = true;                                   // signals an error
                         } else {
-                            userInputY++;       // if no error, loop will continue to check
+                            userInputY++;                                       // if no error, loop will continue to check
                         }
                     }
                     if (!(collision)) {
@@ -368,7 +371,7 @@ public class Battleship {
                         }
                     }
                 } else {
-                    break;  // break statement if there's a collision or if there's an out of bounds exception
+                    break;                                                      // break statement if there's a collision or if there's an out of bounds exception
                 }
                 if (collision) {
                     break;
@@ -388,20 +391,20 @@ public class Battleship {
         int inputX;
         // *Note: much of this program was learning 1000 ways to write a scanner input
         System.out.print("\n\nEnter a coordinate: ");
-        boolean notClear;           // loop that prevents cpu from selecting an invalid coordinate
-        boolean userHit = false;    // return value tracking hits
+        boolean notClear;                                                       // loop that prevents cpu from selecting an invalid coordinate
+        boolean userHit = false;                                                // return value tracking hits
         do {
             notClear = false;
             if (input.hasNextInt()) {
                 inputX = input.nextInt();
                 inputY = input.nextInt();
                 inputX--;
-                inputY--;                                       // off by one rule
+                inputY--;                                                       // off by one rule
                 if (inputX < 0 || inputX > 9 || inputY < 0 || inputY > 9) {
                     System.out.println("That location is out of bounds.\n");
                     notClear = true;
                     input.nextLine();
-                } else if (map[inputX][inputY] == 'O') {    // conditional clauses
+                } else if (map[inputX][inputY] == 'O') {                        // conditional clauses
                     map[inputX][inputY] = 'X';
                     System.out.println("A hit!\n");
                     mapUserStrike[inputX][inputY] = 'X';
@@ -427,7 +430,7 @@ public class Battleship {
 
         boolean notClear;
         boolean compHit = false;
-        do {                        // mirrors userStrike w/out scanner input
+        do {                                                                    // mirrors userStrike w/out scanner input
             notClear = false;
             int inputY = rnd.nextInt(10);
             int inputX = rnd.nextInt(10);
@@ -453,10 +456,10 @@ public class Battleship {
             System.out.println("    |-----Strike Map------\n    | 1 2 3 4 5 6 7 8 9 10");
         } else {
             System.out.println("    |-----Your Map------\n    | 1 2 3 4 5 6 7 8 9 10");
-        }                       // "Norcal vernacular for very" formatting
-        for (int i = 0; i < mapUserStrike.length; i++) {                 // displays user board
+        }
+        for (int i = 0; i < mapUserStrike.length; i++) {                        // displays user board
             if (i < 9) {
-                System.out.print("  " + (i + 1) + " | ");                // *Note: Implement printf
+                System.out.print("  " + (i + 1) + " | ");                       // ****Note: Implement printf
             } else {
                 System.out.print(" " + (i + 1) + " | ");
             }
