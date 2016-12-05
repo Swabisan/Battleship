@@ -104,7 +104,7 @@ public class Battleship {
         boolean placingShips = true;
         int i = 0;                                                              // general purpose for loop counter
         // Determines what ship user is placing
-        int numberofShips = 5;
+        int numberOfShips = 5;
         int sizeOfCurrentShip;
 
         // splash message w/ instructions
@@ -112,17 +112,17 @@ public class Battleship {
         System.out.println("To place ships, enter a coordinate [x y], and then enter a direction.\n\n");
 
         while (placingShips) {                                                  // loops through every ship that needs to be placed
-            if (numberofShips == 2) {
+            if (numberOfShips == 2) {
                 sizeOfCurrentShip = 3;                                          // Most ships have (length = order number) except for these
-            } else if (numberofShips == 1) {                                    // which have lengths that are different from their order.
+            } else if (numberOfShips == 1) {                                    // which have lengths that are different from their order.
                 sizeOfCurrentShip = 2;
             } else {
-                sizeOfCurrentShip = numberofShips;
+                sizeOfCurrentShip = numberOfShips;
             }
 
             // converts int "currentShip" to string "ship"
             // this is to help the user know what ship they are placing
-            switch (numberofShips) {
+            switch (numberOfShips) {
                 case 1:
                     ship = "destroyer [2]";
                     break;
@@ -186,10 +186,10 @@ public class Battleship {
                     shipDirection = input.next();
 
                     if ("right".equals(shipDirection) && (userInputY + sizeOfCurrentShip) < 9) {          // if else/ else if series
-
                         for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[userInputX][tempY] == 'O') {
                                 collision = true;                               // signals an error
+                                numberOfShips++;
                                 break;
                             }
                             tempY++;                                            // if no error, loop will continue to check
@@ -205,6 +205,7 @@ public class Battleship {
                         for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[userInputX][tempY] == 'O') {
                                 collision = true;
+                                numberOfShips++;
                                 break;
                             }
                             tempY--;
@@ -220,6 +221,7 @@ public class Battleship {
                         for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[tempX][userInputY] == 'O') {
                                 collision = true;
+                                numberOfShips++;
                                 break;
                             }
                             tempX--;
@@ -236,6 +238,7 @@ public class Battleship {
                         for (i = 0; i < sizeOfCurrentShip; i++) {               // loop checks ship length to scan for possible collisions
                             if (map[tempX][userInputY] == 'O') {
                                 collision = true;
+                                numberOfShips++;
                                 break;
                             }
                             tempX++;
@@ -249,22 +252,29 @@ public class Battleship {
                             }
                         }
                     } else {
-                        System.out.println("Acceptable directional inputs are 'up', 'down', 'left', or 'right'.\n");
+                        System.out.println("Error!\n"
+                                + "Either you entered an invalid direction, or a part of the ship is out of bounds.\n"
+                                + "Acceptable directional inputs are 'up', 'down', 'left', or 'right'.\n"
+                                + "Coordinates are typed in the form of 'Row# Column#'.\n");
+                        numberOfShips++;
                         input.nextLine();
                     }
                 } else {
-                    System.out.println("Acceptable directional inputs are 'up', 'down', 'left', or 'right'.\n");
+                    System.out.println("Error!\n"
+                            + "Acceptable directional inputs are 'up', 'down', 'left', or 'right'.\n");
+                    numberOfShips++;
                     input.nextLine();
                 }
 
                 if (collision) {
-                    System.out.println("That location is already occupied.\n");
+                    System.out.println("Error!\n"
+                            + "That location is already occupied.\n");
                     input.nextLine();
                 }
             } while (collision);
 
-            numberofShips--;
-            if (numberofShips == 0) {                                           // ends once user has placed all ships
+            numberOfShips--;
+            if (numberOfShips == 0) {                                           // ends once user has placed all ships
                 placingShips = false;
             }
 
