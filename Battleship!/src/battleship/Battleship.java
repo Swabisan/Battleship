@@ -6,11 +6,11 @@
  * - label axis on display [DONE]
  * - optimize user-input-checks [MOSTLY FIXED] *(Need to add checks to protect against input "1 a" and to spot OoBE errors sooner)
  * - [Critical Bug] Program hangs halfway through a game [FIXED]
- * - pass random through params to save reasources [NOT DONE]
+ * - pass random through params to save reasources [DONE]
  * - check legallity
- * - split into more methods
- * - remove unnessisary params
- * - fix placement bugs
+ * - **optimize: split into more methods
+ * - **optimize: remove unnessisary params
+ * - fix placement bugs [FIXED]
  * - add x-y axis indicators
  */
 package battleship;
@@ -61,7 +61,9 @@ public class Battleship {
                 compHit++;
                 didCompHit = false;
             }
-            System.out.println("Hits required for victory: " + (17 - userHit) + "\n");
+            System.out.println("Hits until user victory: " + (17 - userHit));
+            System.out.println("Hits until CPU  victory: " + (17 - compHit) + "\n");
+
         } while (userHit < 17 && compHit < 17);                                 // *Note: the biggest gamebreaking bug in this program was "||" vs "&&"
         if (userHit == 17) {                                                    // win condition
             System.out.println("All enemy ships have been sunk. You won!");
