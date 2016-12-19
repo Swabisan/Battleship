@@ -465,12 +465,14 @@ public class Battleship {
     public static void showMaps(char[][] mapUserStrike, boolean strikeMap) {
 
         if (strikeMap) {
-            System.out.println("    |-----Strike Map------\n    | 1 2 3 4 5 6 7 8 9 10");
+            System.out.println("    |-Y---Strike Map------\n    | 1 2 3 4 5 6 7 8 9 10");
         } else {
-            System.out.println("    |-----Your Map------\n    | 1 2 3 4 5 6 7 8 9 10");
+            System.out.println("    |-Y---Your Map------\n    | 1 2 3 4 5 6 7 8 9 10");
         }
         for (int i = 0; i < mapUserStrike.length; i++) {                        // displays user board
-            if (i < 9) {
+            if (i == 0) {
+                System.out.print("X " + (i + 1) + " | ");       
+            } else if (i < 9) {
                 System.out.print("  " + (i + 1) + " | ");                       // ****Note: Implement printf
             } else {
                 System.out.print(" " + (i + 1) + " | ");
