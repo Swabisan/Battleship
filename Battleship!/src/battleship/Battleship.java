@@ -471,7 +471,7 @@ public class Battleship {
         }
         for (int i = 0; i < mapUserStrike.length; i++) {                        // displays user board
             if (i == 0) {
-                System.out.print("X " + (i + 1) + " | ");       
+                System.out.print("X " + (i + 1) + " | ");
             } else if (i < 9) {
                 System.out.print("  " + (i + 1) + " | ");                       // ****Note: Implement printf
             } else {
