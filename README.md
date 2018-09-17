@@ -19,7 +19,7 @@ Your ship will go from the selected tile however many tiles long the ship is in 
 
 I.e, for a battleship
 ```
-5 right
+3 5 right
 ```
 ```
 xxxxxxxxxx
