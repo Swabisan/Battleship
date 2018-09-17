@@ -12,7 +12,7 @@ The game is organized into a 10x10 grid with the origin placed in teh top left.
 
 To place your ships, type
 ```
-Coordinate> <Y Coordinate> <Direction>
+<X Coordinate> <Y Coordinate> <Direction>
 ```
 
 Your ship will go from the selected tile however many tiles long the ship is in the desired direction.
